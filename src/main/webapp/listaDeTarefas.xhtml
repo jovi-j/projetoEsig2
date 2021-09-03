@@ -5,7 +5,6 @@
       xmlns:f="http://java.sun.com/jsf/core"      
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:c="http://java.sun.com/jsf/core">
-    
     <h:head>
         <title>Listagem de Tarefas</title>
     </h:head>
@@ -13,6 +12,7 @@
 	<h:outputLink value="index.xhtml">Criar Tarefa</h:outputLink>
 
 	  <h:form>
+	  <h:messages errorStyle="color:red;" id="messageOutput"/>
 		<h:panelGrid id = "panel" columns="4" border="2" cellpadding="3" cellspacing="1">
 
 			<f:facet name = "header">

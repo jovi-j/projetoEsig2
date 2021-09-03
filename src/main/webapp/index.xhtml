@@ -20,12 +20,19 @@
 		<h:outputText value="Criar Tarefa"/>
     </f:facet>
       <h:outputLabel value="Titulo"/>
-    <h:inputText id="titulo" value="#{tarefaMBean.tarefa.titulo}" />
+    <h:inputText required="true" validatorMessage="Título não pode ser nulo." value="#{tarefaMBean.tarefa.titulo}">
+		<f:validateLength minimum = "2" maximum="50"/>
+    </h:inputText>
+
+	<h:outputLabel value="Descrição"/>
+    <h:inputText required="true" validatorMessage="Descrição não pode ser nula." value="#{tarefaMBean.tarefa.descricao}">
+		<f:validateLength minimum = "2" maximum="150"/>
+    </h:inputText>
     
-      <h:outputLabel value="Descrição"/>
-    <h:inputText value="#{tarefaMBean.tarefa.descricao}" />
-      <h:outputLabel value="Responsavel"/>
-    <h:inputText value="#{tarefaMBean.tarefa.responsavel}" />
+    <h:outputLabel required="true" validatorMessage="Responsável não pode ser nulo." value="Responsavel"/>
+    <h:inputText value="#{tarefaMBean.tarefa.responsavel}" >
+		<f:validateLength minimum = "2" maximum="50"/>
+    </h:inputText>
 
       <h:outputLabel value="Prioridade"/>
     <h:selectOneMenu value="#{tarefaMBean.tarefa.prioridade}">
@@ -33,7 +40,8 @@
       <f:selectItem itemValue="1" itemLabel="Media" />
       <f:selectItem itemValue="2" itemLabel="Alta" />
     </h:selectOneMenu>
-      <h:outputText value="Data de entrega"/>
+    
+    <h:outputText value="Data de entrega" required="true"/>
     <h:inputText value="#{tarefaMBean.tarefa.deadline}">
       <f:convertDateTime pattern="dd/MM/yyyy" />
     </h:inputText>
@@ -42,6 +50,7 @@
 		<h:panelGroup style="display:block; text-align:center;">
 			<h:commandButton action="#{tarefaMBean.adicionarTarefa}" value="Salvar Tarefa"/>
 		</h:panelGroup>
+		<h:messages />
     </f:facet>
 
     </h:panelGrid> 
