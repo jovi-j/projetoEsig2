@@ -3,6 +3,7 @@ import br.com.esig.model.Tarefa;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,11 +24,10 @@ public class TarefaMBean implements Serializable{
 	private Tarefa tarefa;
 
 	// Propriedades para a busca
-	String tituloOuDesc = "";
-	String responsavel = "";
-	Long id = 1L;
-	int prioridade = 0;
-	boolean status = false;
+	private String tituloOuDesc = "";
+	private Long id;
+	private String responsavel = "";
+	private boolean status = false;
 
 	// EM para busca no banco
 	EntityManager em = EMUtil.getEntityManager();
@@ -54,15 +54,15 @@ public class TarefaMBean implements Serializable{
 	}
 
 	public void concluirTarefa() {
-		String id = getParam("id");
-		this.tarefa = em.find(Tarefa.class, Long.parseLong(id));
+		String pid = getParam("id");
+		this.tarefa = em.find(Tarefa.class, Long.parseLong(pid));
 		this.tarefa.setStatus(true);
 		adicionarTarefa();
 	}
 
 	public String removerTarefa(){
-		String id = getParam("id");
-		this.tarefa = em.find(Tarefa.class, Long.parseLong(id));
+		String pid = getParam("id");
+		this.tarefa = em.find(Tarefa.class, Long.parseLong(pid));
 		em.getTransaction().begin();
 		tarefa = em.merge(tarefa);
 		em.remove(tarefa);
@@ -74,15 +74,17 @@ public class TarefaMBean implements Serializable{
 
 	public String buscarTarefas(){
 		if(this.id == null){
-        TypedQuery<Tarefa> tQuery = em.createQuery("from Tarefa t where (t.titulo like :tituloOuDesc or " + 
-			"t.descricao like :tituloOuDesc or t.responsavel like :responsavel) and t.status = :status", Tarefa.class);
+        TypedQuery<Tarefa> tQuery = em.createQuery("from Tarefa t where t.titulo like :titulo and t.descricao like :descricao and t.responsavel like :responsavel and t.status = :status", Tarefa.class);
 
-		tQuery.setParameter("tituloOuDesc", this.tituloOuDesc.isEmpty() ? this.tituloOuDesc : "%" + this.tituloOuDesc + "%");
-		tQuery.setParameter("responsavel", this.responsavel.isEmpty() ? this.responsavel : "%" + this.responsavel + "%");
+		tQuery.setParameter("titulo", "%" + this.tituloOuDesc + "%");
+		tQuery.setParameter("descricao", "%" + this.tituloOuDesc + "%");
+        tQuery.setParameter("responsavel", "%" + this.responsavel + "%");
 		tQuery.setParameter("status", this.status);
-		this.setTarefas(tQuery.getResultList());
+		setTarefas(tQuery.getResultList());
 		}else{
-			this.tarefa = em.find(Tarefa.class, this.id);
+			Tarefa t = em.find(Tarefa.class, this.id);
+			setTarefas(new ArrayList<Tarefa>());
+			tarefas.add(t);
 		}
 		return "listaDeTarefas";
 	}
@@ -114,4 +116,35 @@ public class TarefaMBean implements Serializable{
 		this.tarefas = tarefas;
 	}
 
+	public String getTituloOuDesc() {
+		return tituloOuDesc;
+	}
+
+	public void setTituloOuDesc(String tituloOuDesc) {
+		this.tituloOuDesc = tituloOuDesc;
+	}
+
+	public String getResponsavel() {
+		return responsavel;
+	}
+
+	public void setResponsavel(String responsavel) {
+		this.responsavel = responsavel;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public boolean getStatus() {
+		return this.status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 }

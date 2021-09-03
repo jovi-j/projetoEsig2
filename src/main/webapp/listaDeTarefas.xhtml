@@ -11,6 +11,35 @@
     </h:head>
     <h:body>
 	<h:outputLink value="index.xhtml">Criar Tarefa</h:outputLink>
+
+	  <h:form>
+		<h:panelGrid id = "panel" columns="4" border="2" cellpadding="3" cellspacing="1">
+
+			<f:facet name = "header">
+				<h:outputText value="Buscar Tarefa"/>
+			</f:facet>
+			
+			<h:outputLabel value="Número"/> 
+			<h:inputText value="#{tarefaMBean.id}" />
+
+			<h:outputLabel value="Titulo ou Descrição"/> 
+			<h:inputText value="#{tarefaMBean.tituloOuDesc}" />
+			
+			<h:outputLabel value="Responsavel"/>
+			<h:inputText value="#{tarefaMBean.responsavel}" />
+
+			<h:outputLabel value="Concluída?"/>
+			<h:selectBooleanCheckbox value="#{tarefaMBean.status}"/>
+
+			<f:facet name = "footer">
+				<h:panelGroup style="display:block; text-align:center;">
+					<h:commandButton action="#{tarefaMBean.buscarTarefas}" value="Buscar Tarefa(s)"/>
+					<h:commandButton action="#{tarefaMBean.buscarTodasAsTarefas}" value="Apagar Busca"/>
+				</h:panelGroup>
+			</f:facet>
+
+		</h:panelGrid> 
+	  </h:form>
     <h:panelGrid id = "panel" columns="5" border="2" cellpadding="3" cellspacing="1">
 		<f:facet name = "header">
 			<h:outputText value="Lista de Tarefas"/>
