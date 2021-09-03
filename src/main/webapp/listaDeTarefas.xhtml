@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"      
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsf/core">
+    
+    <h:head>
+        <title>Listagem de Tarefas</title>
+    </h:head>
+    <h:body>
+	<h:outputLink value="index.xhtml">Criar Tarefa</h:outputLink>
+    <h:panelGrid id = "panel" columns="5" border="2" cellpadding="3" cellspacing="1">
+		<f:facet name = "header">
+			<h:outputText value="Lista de Tarefas"/>
+		</f:facet>
+			<h:dataTable value="#{tarefaMBean.tarefas}" var="tarefa">
+				<h:column>
+					<f:facet name="header">Número</f:facet>
+					<h:outputText value="#{tarefa.id}"/>
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Titulo</f:facet>
+					<h:outputText value="#{tarefa.titulo}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Responsavel</f:facet>
+					<h:outputText value="#{tarefa.responsavel}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Status</f:facet>
+					<h:outputText rendered="#{tarefa.status == true}" value="Concluída" />  
+					<h:outputText rendered="#{tarefa.status == false}" value="Em Andamento" />  				
+				</h:column>
+
+				<h:column colspan="3">
+					<f:facet name="header">Ações</f:facet>
+					<h:form>
+						<h:commandButton value="Editar" action="#{tarefaMBean.modificarTarefa}">
+							<f:param id="idParam" name="id" value="#{tarefa.id}"/>
+						</h:commandButton>
+					</h:form>
+					<h:form>
+						<h:commandButton value="Concluir" action="#{tarefaMBean.concluirTarefa}">
+							<f:param id="idParam" name="id" value="#{tarefa.id}"/>
+						</h:commandButton>
+					</h:form>
+					<h:form>
+						<h:commandButton value="Excluir" action="#{tarefaMBean.removerTarefa}">
+							<f:param id="idParam" name="id" value="#{tarefa.id}"/>
+						</h:commandButton>
+					</h:form>
+				</h:column>
+
+				
+			</h:dataTable>
+		</h:panelGrid>
+    </h:body>
+</html>
